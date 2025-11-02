@@ -1,4 +1,5 @@
 import re
+import time
 
 # ------------------------
 # Lexer
@@ -387,6 +388,10 @@ LIBRARIES['objects'] = {
     "remove": lambda s, val: (s.remove(val) or s) if isinstance(s, set) else (_ for _ in ()).throw(TypeError("Not a set")),
 }
 
+LIBRARIES['time'] = {
+    "sleep": lambda seconds: time.sleep(seconds)
+}
+
 def remove_comments(code: str) -> str:
     """
     Removes comments starting with # until the end of the line.
@@ -400,9 +405,16 @@ def remove_comments(code: str) -> str:
 # Example program
 # ------------------------
 code = """
-include io; # so yeah i made it remove comments they are quite useful to have in a programming language
+include io;
 
-io.prn("Hello, World!");
+a = 0;
+b = 1;
+while true {
+    io.prn(a);
+    temp = a + b;
+    a = b;
+    b = temp;
+}
 """
 
 tokens = lexer(remove_comments(code))
